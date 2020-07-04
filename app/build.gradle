@@ -1,0 +1,102 @@
+apply from: "$rootDir/build-systems/dependencies.gradle"
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdkVersion appConfig.sdkTarget
+    buildToolsVersion appConfig.buildToolsV
+
+    defaultConfig {
+        applicationId appConfig.appId
+        minSdkVersion appConfig.sdkMin
+        targetSdkVersion appConfig.sdkTarget
+        versionCode appConfig.buildNumber
+        versionName appConfig.nameVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/3/"')
+        buildConfigField("String", "BASE_IMAGE_MOVIE", '"https://image.tmdb.org/t/p/w500/"')
+        buildConfigField("String", "MOVIE_API_KEY", '"1b2f29d43bf2e4f3142530bc6929d341"')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation kotlinLibrary.languagePluginX
+    implementation kotlinLibrary.extCoreX
+
+    implementation androidSupportLibrary.activityExt
+    implementation androidSupportLibrary.appCompatX
+    implementation androidSupportLibrary.recyclerX
+    implementation androidSupportLibrary.swipeX
+    implementation androidSupportLibrary.designX
+    implementation androidSupportLibrary.constraintX
+    implementation androidSupportLibrary.roomRuntime
+    implementation androidSupportLibrary.roomKtx
+    kapt androidSupportLibrary.roomCompiler
+
+    implementation diLibrary.dagger
+    implementation diLibrary.daggerHiltAndroid
+    implementation diLibrary.daggerHiltAndroidTest
+    implementation diLibrary.hiltCommon
+    implementation diLibrary.hiltViewModel
+    kapt diLibrary.daggerCompiler
+    kapt diLibrary.daggerHiltAndroidCompilerKapt
+    kapt diLibrary.hiltCompiler
+    androidTestImplementation diLibrary.daggerHiltAndroidTestImpl
+    kaptAndroidTest diLibrary.daggerHiltAndroidCompilerKapt
+
+    implementation aacLibrary.lifecycleJava8
+    implementation aacLibrary.lifecycleVmExt
+
+    implementation kotlinLibrary.coroutinesCoreX
+    implementation kotlinLibrary.coroutinesAndroidX
+    implementation kotlinLibrary.serializableX
+    implementation kotlinLibrary.kotlinAdapterSerialConverterX
+
+    implementation squareLibrary.okHttpIntcpt
+    implementation squareLibrary.retrofit
+    implementation squareLibrary.moshiConverter
+    implementation squareLibrary.moshi
+    kapt squareLibrary.moshiCodegen
+
+    implementation imageLoader.glide
+    kapt imageLoader.glidCompiler
+
+    implementation debugging.stethoDebug
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}

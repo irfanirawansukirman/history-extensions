@@ -1,0 +1,252 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+ext {
+    gradlePluginV = '4.0.0'
+    kotXPluginV = '1.3.72'
+    project = [
+            gradlePlugin             : "com.android.tools.build:gradle:${gradlePluginV}",
+            kotlinPlugin             : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotXPluginV}",
+            kotlinSerializationPlugin: "org.jetbrains.kotlin:kotlin-serialization:${kotXPluginV}"
+    ]
+
+    appConfig = [
+            appId       : "com.irfanirawansukirman.pipileman",
+            nameTitle   : "Pipileman",
+            nameTitleDev: "Pipileman - Dev",
+            nameVersion : "1.0.0",
+            buildNumber : 1,
+            sdkMin      : 21,
+            sdkTarget   : 29,
+            buildToolsV : "29.0.3",
+            flavorMode  : "mode",
+            idSuffixDev : ".dev"
+    ]
+
+    activityXExtLibraryV = '1.1.0'
+    supportXLibraryV = '1.1.0'
+    constraintXLibV = '1.1.3'
+    supportDesignXLibV = '1.1.0'
+    cardXLibV = '1.1.0'
+    recyclerXLibV = '1.1.0'
+    coordinatorXLibV = '1.0.0'
+    swipeRefreshLibV = '1.0.0'
+    navigationLibV = '2.1.0'
+    legacySupportV4LibV = '1.0.0'
+    roomLibV = '2.2.5'
+    //==================================
+    androidSupportLibrary = [
+            activityExt     : "androidx.activity:activity-ktx:${activityXExtLibraryV}",
+            appCompatX      : "androidx.appcompat:appcompat:${supportXLibraryV}", // appCompat v7
+            designX         : "com.google.android.material:material:${supportDesignXLibV}",
+            recyclerX       : "androidx.recyclerview:recyclerview:${recyclerXLibV}",
+            swipeX          : "androidx.swiperefreshlayout:swiperefreshlayout:${swipeRefreshLibV}",
+            cardX           : "androidx.cardview:cardview:${cardXLibV}",
+            constraintX     : "androidx.constraintlayout:constraintlayout:${constraintXLibV}",
+            coordinatorX    : "com.android.support:coordinatorlayout:${coordinatorXLibV}",
+            legacySupportV4X: "androidx.legacy:legacy-support-v4:${legacySupportV4LibV}",
+
+            roomRuntime     : "androidx.room:room-runtime:${roomLibV}",
+            roomCompiler    : "androidx.room:room-compiler:${roomLibV}",
+            roomKtx         : "androidx.room:room-ktx:${roomLibV}"
+    ]
+    //==================================
+
+    retrofitLibV = '2.9.0'
+    okHttpLibV = '3.12.0'
+    leakCanaryLibV = '1.6.3'
+    moshiConverter = '2.9.0'
+    moshi = '1.9.2'
+    moshiCodegen = '1.9.2'
+    //==================================
+    squareLibrary = [
+            retrofit      : "com.squareup.retrofit2:retrofit:${retrofitLibV}",
+            okHttp        : "com.squareup.okhttp3:okhttp:${okHttpLibV}",
+            okHttpIntcpt  : "com.squareup.okhttp3:logging-interceptor:${okHttpLibV}",
+            debLeakCanary : "com.squareup.leakcanary:leakcanary-android:${leakCanaryLibV}", // using it only debug mode. [debugImplementation]
+            relLeakCanary : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibV}",
+            moshiConverter: "com.squareup.retrofit2:converter-moshi:${moshiConverter}",
+            moshi         : "com.squareup.moshi:moshi:${moshi}",
+            moshiCodegen  : "com.squareup.moshi:moshi-kotlin-codegen:${moshiCodegen}"
+    ]
+    //==================================
+
+    kotXSerLibV = '0.20.0'
+    kotXTenLibV = '1.3.0'
+    kotXCorAndroidLibV = '1.3.2'
+    kotXCorCorelibV = '1.3.2'
+    kotXCorTestLibV = '1.3.2'
+    kotXAdapSerialConX = '0.5.0'
+    //==================================
+    kotlinLibrary = [
+            serializableX                : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${kotXSerLibV}",
+            languagePluginX              : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotXPluginV}",
+            extCoreX                     : "androidx.core:core-ktx:${kotXTenLibV}",
+            coroutinesAndroidX           : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotXCorAndroidLibV}",
+            coroutinesCoreX              : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotXCorCorelibV}",
+            kotlinAdapterSerialConverterX: "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${kotXAdapSerialConX}"
+    ]
+    //==================================
+
+    aacXLifeVMExtLibV = '2.2.0'
+    aacXLifeExtLibV = '2.2.0' // include livedata, viewmodel
+    aacXLifeJava8LibV = '2.2.0' // if using java 8
+    aacXLifeRuntLibV = '2.0.0'
+    aacXLifeCompLibV = '2.0.0'
+    //==================================
+    aacLibrary = [
+            lifecycleVmExt  : "androidx.lifecycle:lifecycle-viewmodel-ktx:${aacXLifeVMExtLibV}", // vm ext, provides a viewModelScope() function that makes it easier to launch coroutines from your ViewModel
+            lifecycleExt    : "androidx.lifecycle:lifecycle-extensions:${aacXLifeExtLibV}", // lifecycle, vm, and livedata
+            lifecycleJava8  : "androidx.lifecycle:lifecycle-common-java8:${aacXLifeJava8LibV}",
+            lifecycleRuntime: "androidx.lifecycle:lifecycle-runtime:${aacXLifeRuntLibV}", // only lifecycle without vm and livedata
+            lifecycleComp   : "androidx.lifecycle:lifecycle-compiler:${aacXLifeCompLibV}" // using kapt
+    ]
+    //==================================
+
+    gpsAuthLibV = '18.0.0'
+    //==================================
+    gPlayLibrary = [
+            gpsAuth: "com.google.android.gms:play-services-auth:${gpsAuthLibV}"
+    ]
+    //==================================
+
+    fbreCrashLibV = '17.0.0-beta03'
+    fbAuthLibV = '19.3.0'
+    fbAnalLibV = '17.3.0'
+    //==================================
+    firebaseLibrary = [
+            fbAuth : "com.google.firebase:firebase-auth:${fbAuthLibV}",
+            fbCrash: "com.google.firebase:firebase-crashlytics:${fbreCrashLibV}",
+            fbAnal : "com.google.firebase:firebase-analytics:${fbAnalLibV}"
+    ]
+    //==================================
+
+    fbLoginLibV = '5.2.0'
+    //==================================
+    facebookLibrary = [
+            fbLogin: "com.facebook.android:facebook-login:${fbLoginLibV}"
+    ]
+    //==================================
+
+    oneSignalLibV = '3.13.0'
+    //==================================
+    pushNotification = [
+            oneSignal: "com.onesignal:OneSignal:${oneSignalLibV}"
+    ]
+    //==================================
+
+    shapeViewLibV = '1.3.2'
+    circleImageLibV = '3.0.0'
+    arthurBottomSheetsLibV = '1.0.0'
+    pagerIndicatorLibV = '1.0.1'
+    touchImageViewLibV = '2.2.0'
+    //==================================
+    customView = [
+            shapeView         : "com.github.florent37:shapeofview:${shapeViewLibV}",
+            circleImageView   : "de.hdodenhof:circleimageview:${circleImageLibV}",
+            arthurBottomSheets: "com.arthurivanets.bottomsheet:bottomsheets-core:${arthurBottomSheetsLibV}",
+            pagerIndicator    : "com.romandanylyk:pageindicatorview:${pagerIndicatorLibV}",
+            touchImageView    : "com.github.MikeOrtiz:TouchImageView:${touchImageViewLibV}"
+    ]
+    //==================================
+
+    daggerLibV = '2.21'
+    koinLibV = '2.0.1'
+    koinScopeLibV = '2.0.1'
+    koinVMLibV = '2.0.1'
+    koinExtLibV = '2.0.1'
+    koinTestLlibV = '2.0.1'
+    daggerLibV = '2.28'
+    daggerHiltAndroidLibV = '2.28.1-alpha'
+    daggerHiltLibV = '1.0.0-alpha01'
+    //==================================
+    diLibrary = [
+            koinCore                     : "org.koin:koin-core:${koinLibV}",
+            koinAndoid                   : "org.koin:koin-android:${koinLibV}",
+            koinVM                       : "org.koin:koin-android-viewmodel:${koinVMLibV}",
+            koinScope                    : "org.koin:koin-android-scope:${koinScopeLibV}",
+            koinExt                      : "org.koin:koin-core-ext:${koinExtLibV}", // experimental features
+
+            dagger                       : "com.google.dagger:dagger:${daggerLibV}",
+            daggerCompiler               : "com.google.dagger:dagger-compiler:${daggerLibV}",
+            daggerHiltAndroidCompiler    : "com.google.dagger:hilt-android-compiler:${daggerHiltAndroidLibV}",
+            daggerHiltAndroidCompilerKapt: "com.google.dagger:hilt-android-compiler:${daggerHiltAndroidLibV}",
+            daggerHiltAndroid            : "com.google.dagger:hilt-android:${daggerHiltAndroidLibV}",
+            daggerHiltAndroidTest        : "com.google.dagger:hilt-android-testing:${daggerHiltAndroidLibV}",
+            daggerHiltAndroidTestImpl    : "com.google.dagger:hilt-android-testing:${daggerHiltAndroidLibV}",
+            hiltCommon                   : "androidx.hilt:hilt-common:${daggerHiltLibV}",
+            hiltViewModel                : "androidx.hilt:hilt-lifecycle-viewmodel:${daggerHiltLibV}",
+            hiltCompiler                 : "androidx.hilt:hilt-compiler:${daggerHiltLibV}",
+            daggerHiltPlugIn             : "com.google.dagger:hilt-android-gradle-plugin:${daggerHiltAndroidLibV}"
+    ]
+    //==================================
+
+    chuckDebugLibV = '1.1.0'
+    chuckReleaseLibV = '1.1.0'
+    stethoLibV = '1.5.1'
+    //==================================
+    debugging = [
+            chuckDebug  : "com.readystatesoftware.chuck:library:${chuckDebugLibV}",
+            chuckRelease: "com.readystatesoftware.chuck:library-no-op:${chuckReleaseLibV}",
+            stethoDebug : "com.facebook.stetho:stetho:${stethoLibV}" // deprecated. Change it with fbflipper
+    ]
+    //==================================
+
+    glideLibV = '4.11.0'
+    picassoLibV = '2.71828'
+    //==================================
+    imageLoader = [
+            picasso     : "com.squareup.picasso:picasso:${picassoLibV}",
+            glide       : "com.github.bumptech.glide:glide:${glideLibV}",
+            glidCompiler: "com.github.bumptech.glide:compiler:${glideLibV}"
+    ]
+
+    jUnitLibV = '4.13'
+    jUnitXLibV = '1.1.1'
+    espressoCoreLibV = '3.1.1'
+    mockitoInlineLibV = '3.0.0'
+    kotlinRunnerJunit4LibV = '0.3.1'
+    archCoreTestXLibV = '2.0.1'
+    //==================================
+    testing = [
+            jUnit              : "junit:junit:${jUnitLibV}",
+            jUnitX             : "androidx.test.ext:junit:${jUnitXLibV}",
+            espressoCore       : "androidx.test.espresso:espresso-core:${espressoCoreLibV}",
+            koinTest           : "org.koin:koin-test:${koinTestLlibV}",
+            mockitoInline      : "org.mockito:mockito-inline:${mockitoInlineLibV}",
+            kotlinXRunnerJunit4: "de.jodamob.kotlin:kotlin-runner-junit4:${kotlinRunnerJunit4LibV}",
+            archCoreTestX      : "androidx.arch.core:core-testing:${archCoreTestXLibV}",
+            coroutinesTextX    : "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotXCorTestLibV}"
+    ]
+    //==================================
+
+    branchIoLib = '4.+'
+    //==================================
+    branchIo = [
+            branchIoInit: "io.branch.sdk.android:library:${branchIoLib}"
+    ]
+    //==================================
+
+    deeplinkDispatchV = '4.1.0'
+    dexterV = '6.0.2'
+    multidexV = '1.0.3'
+    //==================================
+    utils = [
+            // navigation
+            deeplinkDispatch : "com.airbnb:deeplinkdispatch:${deeplinkDispatchV}",
+            deeplinkProcessor: "com.airbnb:deeplinkdispatch-processor:${deeplinkDispatchV}",
+
+            // permission
+            dexterPermission : "com.karumi:dexter:${dexterV}",
+
+            // multidex
+            supportMultidex  : "com.android.support:multidex:${multidexV}"
+    ]
+    //==================================
+
+}
