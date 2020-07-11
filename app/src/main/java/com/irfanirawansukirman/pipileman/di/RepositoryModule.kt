@@ -1,6 +1,7 @@
 package com.irfanirawansukirman.pipileman.di
 
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
+import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ object RepositoryModule {
     @Provides
     @ActivityRetainedScoped
     fun provideMovieRepositoryImpl(
-        movieService: MovieService
-    ): MovieRepositoryImpl = MovieRepositoryImpl(movieService)
+        movieService: MovieService,
+        movieDao: MovieDao
+    ): MovieRepositoryImpl = MovieRepositoryImpl(movieService, movieDao)
 }
