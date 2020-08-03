@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
-import com.irfanirawansukirman.extensions.widget.gone
+import com.irfanirawansukirman.extensions.widget.hide
 import com.irfanirawansukirman.pipileman.abstraction.base.BaseActivity
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState.Status.*
@@ -29,7 +29,7 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
     override fun onFirstLaunch(savedInstanceState: Bundle?) {
         getPopularMovies()
 
-        btnCreate.gone()
+        btnCreate.hide()
     }
 
     override fun continuousCall() {}

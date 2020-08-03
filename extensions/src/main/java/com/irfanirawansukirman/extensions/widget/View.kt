@@ -2,14 +2,14 @@ package com.irfanirawansukirman.extensions.widget
 
 import android.view.View
 
-fun View.visible() {
+fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun View.gone() {
+fun View.hide() {
     visibility = View.GONE
 }
 
-fun View.invisible() {
+fun View.notVisible() {
     visibility = View.INVISIBLE
 }
