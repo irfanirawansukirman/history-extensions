@@ -35,7 +35,7 @@ ext {
     cardXLibV = '1.1.0'
     recyclerXLibV = '1.1.0'
     coordinatorXLibV = '1.0.0'
-    swipeRefreshLibV = '1.0.0'
+    swipeRefreshLibV = '1.1.0'
     navigationLibV = '2.1.0'
     legacySupportV4LibV = '1.0.0'
     roomLibV = '2.2.5'
@@ -58,11 +58,11 @@ ext {
     //==================================
 
     retrofitLibV = '2.9.0'
-    okHttpLibV = '3.12.0'
+    okHttpLibV = '4.8.0'
     leakCanaryLibV = '1.6.3'
     moshiConverter = '2.9.0'
-    moshi = '1.9.2'
-    moshiCodegen = '1.9.2'
+    moshi = '1.9.3'
+    moshiCodegen = '1.9.3'
     //==================================
     squareLibrary = [
             retrofit      : "com.squareup.retrofit2:retrofit:${retrofitLibV}",
@@ -77,10 +77,10 @@ ext {
     //==================================
 
     kotXSerLibV = '0.20.0'
-    kotXTenLibV = '1.3.0'
-    kotXCorAndroidLibV = '1.3.2'
-    kotXCorCorelibV = '1.3.2'
-    kotXCorTestLibV = '1.3.2'
+    kotXTenLibV = '1.3.1'
+    kotXCorAndroidLibV = '1.3.7'
+    kotXCorCorelibV = '1.3.7'
+    kotXCorTestLibV = '1.3.7'
     kotXAdapSerialConX = '0.5.0'
     //==================================
     kotlinLibrary = [
@@ -161,9 +161,9 @@ ext {
     koinVMLibV = '2.0.1'
     koinExtLibV = '2.0.1'
     koinTestLlibV = '2.0.1'
-    daggerLibV = '2.28'
-    daggerHiltAndroidLibV = '2.28.1-alpha'
-    daggerHiltLibV = '1.0.0-alpha01'
+    daggerLibV = '2.28.3'
+    daggerHiltAndroidLibV = '2.28.3-alpha'
+    daggerHiltLibV = '1.0.0-alpha02'
     //==================================
     diLibrary = [
             koinCore                     : "org.koin:koin-core:${koinLibV}",

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import com.irfanirawansukirman.extensions.widget.gone
 import com.irfanirawansukirman.pipileman.abstraction.base.BaseActivity
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState.Status.*
@@ -13,6 +14,7 @@ import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.databinding.MovieActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.movie_activity.*
 
 @AndroidEntryPoint
 class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::inflate),
@@ -26,6 +28,8 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
 
     override fun onFirstLaunch(savedInstanceState: Bundle?) {
         getPopularMovies()
+
+        btnCreate.gone()
     }
 
     override fun continuousCall() {}
