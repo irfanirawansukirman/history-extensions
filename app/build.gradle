@@ -63,6 +63,7 @@ dependencies {
     implementation androidSupportLibrary.constraintX
     implementation androidSupportLibrary.roomRuntime
     implementation androidSupportLibrary.roomKtx
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt androidSupportLibrary.roomCompiler
 
     implementation diLibrary.dagger
