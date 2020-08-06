@@ -1,5 +1,6 @@
 package com.irfanirawansukirman.extensions.widget
 
+import android.content.Context
 import androidx.recyclerview.widget.*
 
 fun RecyclerView.setLinearList(
@@ -35,4 +36,12 @@ fun RecyclerView.setStaggeredList(
     setItemViewCacheSize(30)
     isDrawingCacheEnabled = true
     drawingCacheQuality = android.view.View.DRAWING_CACHE_QUALITY_HIGH
+}
+
+fun RecyclerView.setfitColumnsGrid(
+    context: Context
+): Int {
+    val displayMetrics = context.resources.displayMetrics
+    val dpWidth = displayMetrics.widthPixels / displayMetrics.density
+    return (dpWidth / 180).toInt()
 }

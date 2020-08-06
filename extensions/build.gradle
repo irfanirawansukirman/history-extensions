@@ -1,6 +1,9 @@
+apply from: "$rootDir/build-systems/dependencies.gradle"
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -26,6 +29,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -35,8 +51,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+    implementation androidSupportLibrary.designX
+
+    implementation aacLibrary.lifecycleVmExt
+    implementation aacLibrary.lifecycleJava8
+    implementation aacLibrary.lifecycleLdExt
+
+    implementation squareLibrary.okHttpIntcpt
+    implementation squareLibrary.retrofit
+    implementation squareLibrary.moshiConverter
+    implementation squareLibrary.moshi
+    implementation squareLibrary.moshiKotlin
+    kapt squareLibrary.moshiCodegen
+
+    implementation imageLoader.glide
+    kapt imageLoader.glidCompiler
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

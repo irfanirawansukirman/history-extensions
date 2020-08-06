@@ -8,12 +8,11 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.irfanirawansukirman.pipileman.BuildConfig
 import com.irfanirawansukirman.pipileman.R
 
 fun ImageView.load(path: String?, progress: ProgressBar) {
     Glide.with(this)
-        .load(BuildConfig.BASE_IMAGE_MOVIE + path)
+        .load(path)
         .error(R.color.colorAccent)
         .listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
@@ -42,7 +41,7 @@ fun ImageView.load(path: String?, progress: ProgressBar) {
 
 fun ImageView.loadCircle(path: String?, progress: ProgressBar? = null) {
     Glide.with(this)
-        .load(BuildConfig.BASE_IMAGE_MOVIE + path)
+        .load(path)
         .error(R.color.colorAccent)
         .circleCrop()
         .listener(object : RequestListener<Drawable> {

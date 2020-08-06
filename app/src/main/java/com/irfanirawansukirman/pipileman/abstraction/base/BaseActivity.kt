@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
+import com.irfanirawansukirman.pipileman.R
 
 abstract class BaseActivity<VB : ViewBinding>(private val viewBinder: (LayoutInflater) -> ViewBinding) :
     AppCompatActivity() {
@@ -90,11 +92,11 @@ abstract class BaseActivity<VB : ViewBinding>(private val viewBinder: (LayoutInf
     }
 
     fun showProgress() {
-        // findViewById<SwipeRefreshLayout>(R.id.progress).isRefreshing = true
+         findViewById<SwipeRefreshLayout>(R.id.progress).isRefreshing = true
     }
 
     fun hideProgress() {
-        // findViewById<SwipeRefreshLayout>(R.id.progress).isRefreshing = false
+         findViewById<SwipeRefreshLayout>(R.id.progress).isRefreshing = false
     }
 
     fun getParentToolbar(): Toolbar? = mToolbar

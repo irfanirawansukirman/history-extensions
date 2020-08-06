@@ -22,7 +22,7 @@ class MovieVM @ViewModelInject constructor(
     coroutineContextProvider: CoroutineContextProvider,
     private val movieRepositoryImpl: MovieRepositoryImpl
 ) : BaseViewModel(coroutineContextProvider), MovieContract {
-
+    
     private val _movie = MutableLiveData<UIState<List<Result>>>()
     val movie: LiveData<UIState<List<Result>>>
         get() = _movie

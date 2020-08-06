@@ -62,6 +62,7 @@ ext {
     leakCanaryLibV = '1.6.3'
     moshiConverter = '2.9.0'
     moshi = '1.9.3'
+    moshiKotlin = '1.9.3'
     moshiCodegen = '1.9.3'
     //==================================
     squareLibrary = [
@@ -72,6 +73,7 @@ ext {
             relLeakCanary : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryLibV}",
             moshiConverter: "com.squareup.retrofit2:converter-moshi:${moshiConverter}",
             moshi         : "com.squareup.moshi:moshi:${moshi}",
+            moshiKotlin   : "com.squareup.moshi:moshi-kotlin:${moshiKotlin}",
             moshiCodegen  : "com.squareup.moshi:moshi-kotlin-codegen:${moshiCodegen}"
     ]
     //==================================
@@ -100,6 +102,7 @@ ext {
     aacXLifeCompLibV = '2.0.0'
     //==================================
     aacLibrary = [
+            lifecycleLdExt  : "androidx.lifecycle:lifecycle-livedata-ktx:${aacXLifeVMExtLibV}",
             lifecycleVmExt  : "androidx.lifecycle:lifecycle-viewmodel-ktx:${aacXLifeVMExtLibV}", // vm ext, provides a viewModelScope() function that makes it easier to launch coroutines from your ViewModel
             lifecycleExt    : "androidx.lifecycle:lifecycle-extensions:${aacXLifeExtLibV}", // lifecycle, vm, and livedata
             lifecycleJava8  : "androidx.lifecycle:lifecycle-common-java8:${aacXLifeJava8LibV}",

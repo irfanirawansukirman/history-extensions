@@ -1,10 +1,17 @@
 package com.irfanirawansukirman.pipileman.mvvm.movie
 
+import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
-import com.irfanirawansukirman.extensions.widget.hide
+import com.irfanirawansukirman.extensions.*
+import com.irfanirawansukirman.extensions.widget.getLongFromDate
+import com.irfanirawansukirman.extensions.widget.setDefault
+import com.irfanirawansukirman.extensions.widget.toNewFormat
+import com.irfanirawansukirman.extensions.widget.toRupiah
 import com.irfanirawansukirman.pipileman.abstraction.base.BaseActivity
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState.Status.*
@@ -13,8 +20,15 @@ import com.irfanirawansukirman.pipileman.abstraction.util.ext.subscribe
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.databinding.MovieActivityBinding
+import com.irfanirawansukirman.pipileman.mvvm.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.movie_activity.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+data class User(val name: String)
 
 @AndroidEntryPoint
 class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::inflate),
@@ -26,15 +40,47 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
         viewModel.apply { movie.subscribe(this@MovieActivity, ::showMovies) }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onFirstLaunch(savedInstanceState: Bundle?) {
         getPopularMovies()
 
-        btnCreate.hide()
+        val date = "13/09/2008"
+        btnCreate.text = "${date.getLongFromDate().toNewFormat()}\n${date.getLongFromDate()}"
+        btnCreate.setOnClickListener {
+            showToast("Internet is: ${isNetworkAvailable(this)}")
+
+            createNotification {
+                val intentTarget = Intent(this@MovieActivity, MovieActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    putExtra("a", "Irfan Irawan Sukirman")
+                }
+                val pendingIntent =
+                    PendingIntent.getActivity(this@MovieActivity, 0, intentTarget, 0)
+                it.setContentIntent(pendingIntent)
+            }
+
+            GlobalScope.launch(Dispatchers.Main) {
+                showSnackBar(root, "Irfan Irawan Sukirman")
+                delay(2_000)
+                showSnackBar(root, "Data has been updated", "Show") {
+                    logD(User(name = "Irfan Irawan Sukirman"))
+                }
+            }
+        }
+
+        val param = intent?.getStringExtra("a")
+        if (param != null) {
+            navigation<MainActivity> {
+                putExtra("a", param)
+            }
+        }
     }
 
     override fun continuousCall() {}
 
-    override fun setupViewListener() {}
+    override fun setupViewListener() {
+        progress.setOnRefreshListener { getPopularMovies() }
+    }
 
     override fun enableBackButton(): Boolean = false
 
