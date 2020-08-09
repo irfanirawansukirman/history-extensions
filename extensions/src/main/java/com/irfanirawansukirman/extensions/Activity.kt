@@ -63,6 +63,24 @@ fun AppCompatActivity.getScreenHeight(): Int {
     return metrics.heightPixels
 }
 
+fun AppCompatActivity.finishResult(resultCode: Int = 1234) {
+    finishResult(resultCode) {}
+}
+
+fun AppCompatActivity.finishResult(
+    resultCode: Int = 1234,
+    intent: Intent = Intent(),
+    intentParams: Intent.() -> Unit
+) {
+    intent.intentParams()
+    setResult(resultCode, intent)
+    finish()
+}
+
+inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation() {
+    navigation<T> {}
+}
+
 inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
     withFinish: Boolean = false,
     requestCode: Int = 0,
@@ -155,10 +173,6 @@ fun AppCompatActivity.createNotification(
 
 fun AppCompatActivity.clearNotification() = notificationManager?.cancelAll()
 
-fun AppCompatActivity.logD(message: String) {
-    Log.d(this::class.java.simpleName, message)
-}
-
 var moshi: Moshi? = null
 inline fun <reified T> AppCompatActivity.logD(obj: T) {
     moshi = Moshi.Builder()
@@ -167,6 +181,10 @@ inline fun <reified T> AppCompatActivity.logD(obj: T) {
     val adapter = moshi?.adapter<T>(T::class.java)
     val json = adapter?.toJson(obj) ?: "Error"
     logD(json)
+}
+
+fun AppCompatActivity.logD(message: String) {
+    Log.d(this::class.java.simpleName, message)
 }
 
 fun AppCompatActivity.logE(message: String) {
@@ -209,4 +227,12 @@ fun AppCompatActivity.getStatusBarHeight(
         result = context.resources.getDimensionPixelSize(resourceId)
     }
     return result
+}
+
+fun AppCompatActivity.singlePermission() {
+    // coming soon
+}
+
+fun AppCompatActivity.multiplePermission() {
+    // coming soon
 }

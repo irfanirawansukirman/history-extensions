@@ -3,7 +3,7 @@ package com.irfanirawansukirman.pipileman.abstraction.ui
 data class UIState<T>(val status: Status, val data: T?, val error: String) {
 
     enum class Status {
-        SUCCESS, ERROR, LOADING, TIMEOUT
+        SUCCESS, ERROR, LOADING, TIMEOUT, FINISH
     }
 
     companion object {
@@ -21,6 +21,10 @@ data class UIState<T>(val status: Status, val data: T?, val error: String) {
 
         fun <T> loading(): UIState<T> {
             return UIState(Status.LOADING, null, "")
+        }
+
+        fun <T> finish(): UIState<T> {
+            return UIState(Status.FINISH, null, "")
         }
     }
 }

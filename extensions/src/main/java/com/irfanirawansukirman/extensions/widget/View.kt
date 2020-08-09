@@ -1,6 +1,7 @@
 package com.irfanirawansukirman.extensions.widget
 
 import android.view.View
+import com.irfanirawansukirman.extensions.common.ThrottledOnClickListener
 
 fun View.show() {
     visibility = View.VISIBLE
@@ -24,4 +25,13 @@ fun View.disableView() {
     isClickable = false
     isEnabled = false
     isFocusable = false
+}
+
+fun View.setOnSingleClickListener(
+    holdTime: Long = 1000L,
+    action: (View) -> Unit
+) {
+    setOnClickListener(ThrottledOnClickListener(holdTime) {
+        action(it)
+    })
 }

@@ -38,6 +38,7 @@ class MovieVM @ViewModelInject constructor(
     override fun getPopularMovies() {
         _movie.value = UIState.loading()
         executeJob { _movie.value = UIState.success(movieRepositoryImpl.getPopularMovies()) }
+        _movie.value = UIState.finish()
     }
 
     override fun insertLocalMovie(movie: MovieEnt) =
@@ -46,10 +47,12 @@ class MovieVM @ViewModelInject constructor(
     override fun getLocalMovie(movieId: Long) {
         _movieObj.value = UIState.loading()
         executeJob { _movieObj.value = UIState.success(movieRepositoryImpl.getLocalMovie(movieId)) }
+        _movieObj.value = UIState.finish()
     }
 
     override fun getAllLocalMovies() {
         _movieArray.value = UIState.loading()
         executeJob { _movieArray.value = UIState.success(movieRepositoryImpl.getAllLocalMovies()) }
+        _movieArray.value = UIState.finish()
     }
 }

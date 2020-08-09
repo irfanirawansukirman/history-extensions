@@ -9,14 +9,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import com.irfanirawansukirman.extensions.*
 import com.irfanirawansukirman.extensions.widget.getLongFromDate
-import com.irfanirawansukirman.extensions.widget.setDefault
 import com.irfanirawansukirman.extensions.widget.toNewFormat
-import com.irfanirawansukirman.extensions.widget.toRupiah
 import com.irfanirawansukirman.pipileman.abstraction.base.BaseActivity
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState.Status.*
-import com.irfanirawansukirman.pipileman.abstraction.util.ext.showToast
-import com.irfanirawansukirman.pipileman.abstraction.util.ext.subscribe
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.databinding.MovieActivityBinding
@@ -70,8 +66,8 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
 
         val param = intent?.getStringExtra("a")
         if (param != null) {
-            navigation<MainActivity> {
-                putExtra("a", param)
+            navigation<MainActivity>(requestCode = 1234) {
+                putExtra("a", "Irfan Irawan Sukirman")
             }
         }
     }
@@ -102,24 +98,26 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
         viewModel.getAllLocalMovies()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 1234 && resultCode == 1234) {
+            showToast("Alhamdulillah")
+        }
+    }
+
     private fun showMovies(state: UIState<List<Result>>) {
         when (state.status) {
             LOADING -> showProgress()
+            FINISH -> hideProgress()
             SUCCESS -> {
-                hideProgress()
-
                 state.data?.let {
                     Log.d(MovieActivity::class.java.simpleName, it.toString())
                 }
             }
             ERROR -> {
-                hideProgress()
-
                 showToast(state.error)
             }
             else -> {
-                hideProgress()
-
                 showToast(state.error)
             }
         }

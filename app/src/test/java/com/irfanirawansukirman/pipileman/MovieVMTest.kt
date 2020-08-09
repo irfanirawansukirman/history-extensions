@@ -21,9 +21,9 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class MovieVMTest {
 
-    private lateinit var testCoroutineContextProvider: TestCoroutineContextProvider
-    private lateinit var viewModel: MovieVM
-    private lateinit var movieRepositoryImpl: MovieRepositoryImpl
+    private var testCoroutineContextProvider: TestCoroutineContextProvider = mock()
+    private var viewModel: MovieVM = mock()
+    private var movieRepositoryImpl: MovieRepositoryImpl = mock()
 
     private var movieService: MovieService = mock()
     private var movieDao: MovieDao = mock()

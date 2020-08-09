@@ -9,14 +9,15 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val movieService: MovieService,
     private val movieDao: MovieDao
-) : MovieRepository {
+) : MovieRepository.Remote, MovieRepository.Cache {
 
     override suspend fun getPopularMovies(): List<Result> =
-        movieService.getPopular().results!!
+        movieService.getPopular().results ?: emptyList()
 
     override suspend fun insertLocalMovie(movieEnt: MovieEnt) = movieDao.insertObject(movieEnt)
 
     override suspend fun getLocalMovie(movieId: Long): MovieEnt? = movieDao.getObject(movieId)
 
     override suspend fun getAllLocalMovies(): List<MovieEnt>? = movieDao.getAllObject()
+
 }
