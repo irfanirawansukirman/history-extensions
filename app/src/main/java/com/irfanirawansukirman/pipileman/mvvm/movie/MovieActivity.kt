@@ -56,9 +56,8 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
             }
 
             GlobalScope.launch(Dispatchers.Main) {
-                showSnackBar(root, "Irfan Irawan Sukirman")
                 delay(2_000)
-                showSnackBar(root, "Data has been updated", "Show") {
+                showSnackBar(root, "Data has been updated", "Close") {
                     logD(User(name = "Irfan Irawan Sukirman"))
                 }
             }

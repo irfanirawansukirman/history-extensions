@@ -35,15 +35,8 @@ fun AppCompatActivity.showToast(message: String) {
 
 fun AppCompatActivity.showSnackBar(
     v: View,
-    message: String = ""
-) {
-    Snackbar.make(v, message, Snackbar.LENGTH_SHORT).show()
-}
-
-fun AppCompatActivity.showSnackBar(
-    v: View,
     message: String = "",
-    actionTitle: String = "",
+    actionTitle: String? = null,
     action: () -> Unit
 ) {
     Snackbar.make(v, message, Snackbar.LENGTH_SHORT).setAction(actionTitle) {
