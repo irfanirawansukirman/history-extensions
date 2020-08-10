@@ -164,10 +164,6 @@ fun AppCompatActivity.logD(message: String) {
     Log.d(this::class.java.simpleName, message)
 }
 
-fun AppCompatActivity.logE(message: String) {
-    Log.e(this::class.java.simpleName, message)
-}
-
 inline fun <reified T> AppCompatActivity.logE(obj: T) {
     moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -175,6 +171,10 @@ inline fun <reified T> AppCompatActivity.logE(obj: T) {
     val adapter = moshi?.adapter<T>(T::class.java)
     val json = adapter?.toJson(obj) ?: "Error"
     logE(json)
+}
+
+fun AppCompatActivity.logE(message: String) {
+    Log.e(this::class.java.simpleName, message)
 }
 
 fun AppCompatActivity.getScreenWidth(): Int {
@@ -189,13 +189,11 @@ fun AppCompatActivity.getScreenHeight(): Int {
     return metrics.heightPixels
 }
 
-fun AppCompatActivity.getStatusBarHeight(
-    context: Context
-): Int {
+fun AppCompatActivity.getStatusBarHeight(): Int {
     var result = 0
-    val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
     if (resourceId > 0) {
-        result = context.resources.getDimensionPixelSize(resourceId)
+        result = resources.getDimensionPixelSize(resourceId)
     }
     return result
 }

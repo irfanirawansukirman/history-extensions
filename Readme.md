@@ -33,6 +33,10 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 - [Connection Checking](#connection-checking)
 - [Custom Dialog](#custom-dialog)
 - [Notification](#notification)
+- [Log](#log) (Object logging use moshi for serialization and deserialization)
+- [Screen Width](#screen-width)
+- [Screen Height](#screen-height)
+- [StatusBar Height](#statusbar-height)
 #### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
 #### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
 #### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
@@ -57,7 +61,7 @@ fun AppCompatActivity.showToast(message: String) {
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          showToast("Your message")
+         showToast("Your message")
      } 
 }
 ```
@@ -81,7 +85,7 @@ Without action button:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          showSnackBar(yourView, "Your message") {}
+         showSnackBar(yourView, "Your message") {}
      } 
 }
 ```
@@ -90,9 +94,9 @@ With action button:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          showSnackBar(yourView, "Your message", "Your action button title") {
-               // your task
-          }
+         showSnackBar(yourView, "Your message", "Your action button title") {
+             // your task
+         }
      } 
 }
 ```
@@ -119,9 +123,9 @@ Without custom parameter (request_code default is 0):
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          navigation<yourActivityTarget> {
-               // put params here
-          }
+         navigation<yourActivityTarget> {
+             // put params here
+         }
      } 
 }
 ```
@@ -130,9 +134,9 @@ With custom parameter:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          navigation<yourActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
-               // put params here
-          }
+         navigation<yourActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
+             // put params here
+         }
      } 
 }
 ```
@@ -158,9 +162,9 @@ Without custom parameter (result_code default is 1234):
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          finishResult {
-               // put params here
-          }
+         finishResult {
+             // put params here
+         }
      } 
 }
 ```
@@ -169,9 +173,9 @@ With custom parameter:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          finishResult(resultCode = yourResultCode, intent = yourIntentTarget) {
-               // put params here            
-          }
+         finishResult(resultCode = yourResultCode, intent = yourIntentTarget) {
+             // put params here            
+         }
      } 
 }
 ```
@@ -191,7 +195,7 @@ fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          if (isNetworkAvailable(yourContext)) {} else {}
+         if (isNetworkAvailable(yourContext)) {} else {}
      } 
 }
 ```
@@ -223,9 +227,9 @@ fun AppCompatActivity.createDialog(
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          createDialog(R.layout.yourLayoutDialog) {
-               // your dialog reference                
-          }
+         createDialog(R.layout.yourLayoutDialog) {
+             // your dialog reference                
+         }
      } 
 }
 ```
@@ -276,6 +280,10 @@ fun AppCompatActivity.createNotification(
     notificationManager?.notify(notificationId, notificationBuilder.build())
 }
 ```
+#### Cancel Notification
+```
+fun AppCompatActivity.clearNotification() = notificationManager?.cancelAll()
+```
 #### How to use?
 ```
 class LoremClass: AppCompatActivity() {
@@ -291,6 +299,109 @@ class LoremClass: AppCompatActivity() {
                    setContentIntent(pendingIntent)
                }
           }
+
+          // if you want cancel notification
+          clearNotification()
      } 
 }
+```
+#### Log
+```
+var moshi: Moshi? = null
+inline fun <reified T> AppCompatActivity.logD(obj: T) {
+    moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    val adapter = moshi?.adapter<T>(T::class.java)
+    val json = adapter?.toJson(obj) ?: "Error"
+    logD(json)
+}
+
+fun AppCompatActivity.logD(message: String) {
+    Log.d(this::class.java.simpleName, message)
+}
+
+inline fun <reified T> AppCompatActivity.logE(obj: T) {
+    moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    val adapter = moshi?.adapter<T>(T::class.java)
+    val json = adapter?.toJson(obj) ?: "Error"
+    logE(json)
+}
+
+fun AppCompatActivity.logE(message: String) {
+    Log.e(this::class.java.simpleName, message)
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+         // debug
+         logD(yourObject)
+         // or
+         logD("yourMessage")
+
+         // error
+         logE(yourObject)
+         // or
+         logE("yourMessage")
+     } 
+} 
+```
+#### Screen Width
+```
+fun AppCompatActivity.getScreenWidth(): Int {
+    val metrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.widthPixels
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+         val screenWidth = getScreenWidth()
+     } 
+}     
+```
+#### Screen Height
+```
+fun AppCompatActivity.getScreenHeight(): Int {
+    val metrics: DisplayMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.heightPixels
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+         val screenHeight = getScreenHeight()
+     } 
+}     
+```
+#### StatusBar Height
+```
+fun AppCompatActivity.getStatusBarHeight(): Int {
+    var result = 0
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+    if (resourceId > 0) {
+        result = resources.getDimensionPixelSize(resourceId)
+    }
+    return result
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+         val statusBarHeight = getStatusBarHeight()
+     } 
+}     
 ```
