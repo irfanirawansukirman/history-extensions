@@ -82,18 +82,6 @@ fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
     return isConnected ?: false
 }
 
-fun AppCompatActivity.getScreenWidth(): Int {
-    val metrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metrics)
-    return metrics.widthPixels
-}
-
-fun AppCompatActivity.getScreenHeight(): Int {
-    val metrics: DisplayMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metrics)
-    return metrics.heightPixels
-}
-
 fun AppCompatActivity.createDialog(
     @LayoutRes layoutId: Int,
     execute: (Dialog) -> Unit
@@ -193,22 +181,16 @@ inline fun <reified T> AppCompatActivity.logE(obj: T) {
     logE(json)
 }
 
-fun AppCompatActivity.getScreenHeight(
-    context: Context
-): Int {
-    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val dm = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(dm)
-    return dm.heightPixels
+fun AppCompatActivity.getScreenWidth(): Int {
+    val metrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.widthPixels
 }
 
-fun AppCompatActivity.getScreenWidth(
-    context: Context
-): Int {
-    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val dm = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(dm)
-    return dm.widthPixels
+fun AppCompatActivity.getScreenHeight(): Int {
+    val metrics: DisplayMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.heightPixels
 }
 
 fun AppCompatActivity.getStatusBarHeight(

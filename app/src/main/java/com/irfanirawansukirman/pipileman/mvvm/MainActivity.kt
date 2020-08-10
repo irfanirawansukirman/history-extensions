@@ -1,9 +1,8 @@
 package com.irfanirawansukirman.pipileman.mvvm
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.irfanirawansukirman.extensions.finishResult
-import com.irfanirawansukirman.extensions.showToast
+import androidx.appcompat.app.AppCompatActivity
+import com.irfanirawansukirman.extensions.createDialog
 import com.irfanirawansukirman.pipileman.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,6 +13,10 @@ class MainActivity : AppCompatActivity() {
         val param = intent?.getStringExtra("a") ?: "Haha"
         txtTitle.text = param
 
-        btnFinish.setOnClickListener { finishResult() }
+        btnFinish.setOnClickListener {
+            createDialog(R.layout.sample_dialog) {
+
+            }
+        }
     }
 }

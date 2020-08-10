@@ -27,8 +27,11 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ## Table of Contents
 #### [1.Activity Scope](#activity-scope)
 - [Show Toast](#show-toast)
-- [Show Snackbar](#show-snackbar)
+- [Show SnackBar](#show-snackbar)
 - [Navigation](#navigation)
+- [Finish With Result](#finish-with-result)
+- [Connection Checking](#connection-checking)
+- [Custom Dialog](#custom-dialog)
 #### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
 #### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
 #### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
@@ -58,7 +61,7 @@ class LoremClass: AppCompatActivity() {
 }
 ```
 
-#### Show Snackbar 
+#### Show SnackBar 
 ```
 fun AppCompatActivity.showSnackBar(
     v: View,
@@ -110,8 +113,7 @@ inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
 }
 ```
 #### How to use?
-Without request code:
-
+Without custom parameter (request_code default is 0):
 ```
 class LoremClass: AppCompatActivity() {
     
@@ -122,14 +124,106 @@ class LoremClass: AppCompatActivity() {
      } 
 }
 ```
-With request code:
-
+With custom parameter:
 ```
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
           navigation<ActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
                // put params here
+          }
+     } 
+}
+```
+#### Finish With Result
+```
+fun AppCompatActivity.finishResult(resultCode: Int = 1234) {
+    finishResult(resultCode) {}
+}
+
+fun AppCompatActivity.finishResult(
+    resultCode: Int = 1234,
+    intent: Intent = Intent(),
+    intentParams: Intent.() -> Unit
+) {
+    intent.intentParams()
+    setResult(resultCode, intent)
+    finish()
+}
+```
+#### How to use?
+Without custom parameter (result_code default is 1234): 
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          finishResult {
+               // put params here
+          }
+     } 
+}
+```
+With custom parameter:
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          finishResult(resultCode = yourResultCode, intent = yourIntentTarget) {
+               // put params here            
+          }
+     } 
+}
+```
+#### Connection Checking
+```
+fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
+    var isConnected: Boolean? = false // Initial Value
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+    if (activeNetwork != null && activeNetwork.isConnected) isConnected = true
+    return isConnected ?: false
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          if (isNetworkAvailable(yourContext)) {} else {}
+     } 
+}
+```
+#### Custom Dialog
+```
+fun AppCompatActivity.createDialog(
+    @LayoutRes layoutId: Int,
+    execute: (Dialog) -> Unit
+) {
+    val dialog = Dialog(this)
+    dialog.apply {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(layoutId)
+        window?.apply {
+            setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+        setCanceledOnTouchOutside(false)
+        setCancelable(false)
+    }
+    execute(dialog)
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          createDialog(R.layout.yourLayoutDialog) {
+               // your dialog reference                
           }
      } 
 }
