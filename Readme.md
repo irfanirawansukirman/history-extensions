@@ -34,3 +34,24 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 - [RecyclerView](https://github.com/irfanirawansukirman/history-extensions#recyclerview) 
 - [ImageView](https://github.com/irfanirawansukirman/history-extensions#encryptentity) 
 ##### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
+
+## Activity Scope
+![activity]
+Show toast message on Activity Class
+```
+private var toast: Toast? = null
+fun AppCompatActivity.showToast(message: String) {
+    toast?.cancel()
+    toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+    toast?.show()
+}
+```
+##### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          showToast("Your message")
+     } 
+}
+```
