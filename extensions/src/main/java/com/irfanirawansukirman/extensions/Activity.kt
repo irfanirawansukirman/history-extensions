@@ -44,16 +44,19 @@ fun AppCompatActivity.showSnackBar(
     }.show()
 }
 
-fun AppCompatActivity.getScreenWidth(): Int {
-    val metrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metrics)
-    return metrics.widthPixels
+inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation() {
+    navigation<T> {}
 }
 
-fun AppCompatActivity.getScreenHeight(): Int {
-    val metrics: DisplayMetrics = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metrics)
-    return metrics.heightPixels
+inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
+    withFinish: Boolean = false,
+    requestCode: Int = 0,
+    intentParams: Intent.() -> Unit
+) {
+    val intent = Intent(this, T::class.java)
+    intent.intentParams()
+    if (requestCode != 0) startActivityForResult(intent, requestCode) else startActivity(intent)
+    if (withFinish) finish()
 }
 
 fun AppCompatActivity.finishResult(resultCode: Int = 1234) {
@@ -70,21 +73,6 @@ fun AppCompatActivity.finishResult(
     finish()
 }
 
-inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation() {
-    navigation<T> {}
-}
-
-inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
-    withFinish: Boolean = false,
-    requestCode: Int = 0,
-    intentParams: Intent.() -> Unit
-) {
-    val intent = Intent(this, T::class.java)
-    intent.intentParams()
-    if (requestCode != 0) startActivityForResult(intent, requestCode) else startActivity(intent)
-    if (withFinish) finish()
-}
-
 fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
     var isConnected: Boolean? = false // Initial Value
     val connectivityManager =
@@ -92,6 +80,18 @@ fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
     val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
     if (activeNetwork != null && activeNetwork.isConnected) isConnected = true
     return isConnected ?: false
+}
+
+fun AppCompatActivity.getScreenWidth(): Int {
+    val metrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.widthPixels
+}
+
+fun AppCompatActivity.getScreenHeight(): Int {
+    val metrics: DisplayMetrics = DisplayMetrics()
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return metrics.heightPixels
 }
 
 fun AppCompatActivity.createDialog(

@@ -26,6 +26,9 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 
 ## Table of Contents
 ##### [1.Activity Scope](#activity-scope)
+- [Show Toast](#show-toast)
+- [Show Snackbar](#show-snackbar)
+- [Navigation](#navigation)
 ##### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
 ##### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
 ##### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
@@ -36,7 +39,7 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ##### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
 
 ## Activity Scope
-Show toast message on Activity Class
+#### Show Toast
 ```
 private var toast: Toast? = null
 fun AppCompatActivity.showToast(message: String) {
@@ -51,6 +54,70 @@ class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
           showToast("Your message")
+     } 
+}
+```
+
+#### Show Snackbar 
+```
+fun AppCompatActivity.showSnackBar(
+    v: View,
+    message: String = "",
+    actionTitle: String? = null,
+    action: () -> Unit
+) {
+    Snackbar.make(v, message, Snackbar.LENGTH_SHORT).setAction(actionTitle) {
+        action()
+    }.show()
+}
+```
+##### How to use?
+Without action button:
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          showSnackBar(yourView, "Your message") {}
+     } 
+}
+```
+With action button:
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          showSnackBar(yourView, "Your message", "Your action button title") {
+               // your task
+          }
+     } 
+}
+```
+#### Navigation
+Without request code:
+
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          showSnackBar(yourView, "Your message", "Your action button title") {
+               navigation<ActivityTarget> {
+                    // put params here
+               }
+          }
+     } 
+}
+```
+With request code:
+
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          showSnackBar(yourView, "Your message", "Your action button title") {
+               navigation<ActivityTarget>(requestCode = exp : 1234) {
+                    // put params here
+               }
+          }
      } 
 }
 ```
