@@ -36,7 +36,7 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ##### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
 
 ## Activity Scope
-![activity]Show toast message on Activity Class
+![activity] Show toast message on Activity Class
 ```
 private var toast: Toast? = null
 fun AppCompatActivity.showToast(message: String) {
