@@ -32,6 +32,7 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 - [Finish With Result](#finish-with-result)
 - [Connection Checking](#connection-checking)
 - [Custom Dialog](#custom-dialog)
+- [Notification](#notification)
 #### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
 #### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
 #### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
@@ -118,7 +119,7 @@ Without custom parameter (request_code default is 0):
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          navigation<ActivityTarget> {
+          navigation<yourActivityTarget> {
                // put params here
           }
      } 
@@ -129,7 +130,7 @@ With custom parameter:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          navigation<ActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
+          navigation<yourActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
                // put params here
           }
      } 
@@ -224,6 +225,71 @@ class LoremClass: AppCompatActivity() {
      fun someFunc() {
           createDialog(R.layout.yourLayoutDialog) {
                // your dialog reference                
+          }
+     } 
+}
+```
+#### Notification
+```
+private var notificationManager: NotificationManager? = null
+fun AppCompatActivity.createNotification(
+    title: String = "Your Title",
+    message: String = "Your Message",
+    channelId: String = "12345",
+    channelName: String = "Your Channel Name",
+    channelDescription: String = "Your Channel Description",
+    notificationId: Int = 1234,
+    smallIcon: Int = R.drawable.ic_notification,
+    expertConfig: (NotificationCompat.Builder) -> Unit
+) {
+    notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+    val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
+        setContentTitle(title)
+        setContentText(message)
+        setSmallIcon(smallIcon)
+        setAutoCancel(true)
+        priority = NotificationCompat.PRIORITY_MAX
+        setSound(defaultSoundUri)
+    }
+
+    expertConfig(notificationBuilder)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        // Create the NotificationChannel
+        val mChannel = NotificationChannel(
+            channelId,
+            channelName,
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        mChannel.description = channelDescription
+        mChannel.enableLights(true)
+        mChannel.lightColor = Color.RED
+        mChannel.enableVibration(true)
+        mChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        notificationManager?.createNotificationChannel(mChannel)
+    }
+
+    notificationManager?.notify(notificationId, notificationBuilder.build())
+}
+```
+#### How to use?
+```
+class LoremClass: AppCompatActivity() {
+    
+     fun someFunc() {
+          createNotification {
+               val intentTarget = Intent(this@MovieActivity, yourActivityTarget::class.java).apply {
+                   // your custom param and flag
+               }
+               val pendingIntent =
+                   PendingIntent.getActivity(yourContext, yourRequestCode, intentTarget, yourFlags)
+               it.apply {
+                   setContentIntent(pendingIntent)
+               }
           }
      } 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import com.irfanirawansukirman.extensions.*
 import com.irfanirawansukirman.extensions.widget.getLongFromDate
 import com.irfanirawansukirman.extensions.widget.toNewFormat
@@ -52,7 +53,13 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
                 }
                 val pendingIntent =
                     PendingIntent.getActivity(this@MovieActivity, 0, intentTarget, 0)
-                it.setContentIntent(pendingIntent)
+                it.apply {
+                    setStyle(
+                        NotificationCompat.BigTextStyle()
+                            .bigText("Irfan Irawan Sukirman")
+                    )
+                    setContentIntent(pendingIntent)
+                }
             }
 
             GlobalScope.launch(Dispatchers.Main) {

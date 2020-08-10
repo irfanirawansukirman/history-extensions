@@ -124,10 +124,6 @@ fun AppCompatActivity.createNotification(
         setAutoCancel(true)
         priority = NotificationCompat.PRIORITY_MAX
         setSound(defaultSoundUri)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText("Irfan Irawan Sukirman")
-            )
     }
 
     expertConfig(notificationBuilder)
