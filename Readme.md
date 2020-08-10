@@ -25,7 +25,7 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ```
 
 ## Table of Contents
-##### [1.Activity](https://github.com/irfanirawansukirman/history-extensions#activity)
+##### [1.Activity Scope](#activity-scope)
 ##### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
 ##### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
 ##### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
@@ -36,7 +36,7 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ##### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
 
 ## Activity Scope
-![activity] Show toast message on Activity Class
+Show toast message on Activity Class
 ```
 private var toast: Toast? = null
 fun AppCompatActivity.showToast(message: String) {
