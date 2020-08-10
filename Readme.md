@@ -128,7 +128,7 @@ With request code:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          navigation<ActivityTarget>(requestCode = exp : 1234) {
+          navigation<ActivityTarget>(requestCode = yourRequestCode, withFinish = true or false) {
                // put params here
           }
      } 
