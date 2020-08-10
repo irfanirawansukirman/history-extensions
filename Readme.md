@@ -25,18 +25,18 @@ implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
 ```
 
 ## Table of Contents
-##### [1.Activity Scope](#activity-scope)
+#### [1.Activity Scope](#activity-scope)
 - [Show Toast](#show-toast)
 - [Show Snackbar](#show-snackbar)
 - [Navigation](#navigation)
-##### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
-##### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
-##### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
+#### [2.Fragment](https://github.com/irfanirawansukirman/history-extensions#fragment)
+#### [3.LiveData](https://github.com/irfanirawansukirman/history-extensions#livedata) 
+#### [4.UI](https://github.com/irfanirawansukirman/history-extensions#usage-in-kotlin)
 - [View](https://github.com/irfanirawansukirman/history-extensions#view)
 - [TextView](https://github.com/irfanirawansukirman/history-extensions#textview)
 - [RecyclerView](https://github.com/irfanirawansukirman/history-extensions#recyclerview) 
 - [ImageView](https://github.com/irfanirawansukirman/history-extensions#encryptentity) 
-##### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
+#### [5.Conversion](https://github.com/irfanirawansukirman/history-extensions#imageview)
 
 ## Activity Scope
 #### Show Toast
@@ -48,7 +48,7 @@ fun AppCompatActivity.showToast(message: String) {
     toast?.show()
 }
 ```
-##### How to use?
+#### How to use?
 ```
 class LoremClass: AppCompatActivity() {
     
@@ -71,7 +71,7 @@ fun AppCompatActivity.showSnackBar(
     }.show()
 }
 ```
-##### How to use?
+#### How to use?
 Without action button:
 ```
 class LoremClass: AppCompatActivity() {
@@ -93,16 +93,31 @@ class LoremClass: AppCompatActivity() {
 }
 ```
 #### Navigation
+```
+inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation() {
+    navigation<T> {}
+}
+
+inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
+    withFinish: Boolean = false,
+    requestCode: Int = 0,
+    intentParams: Intent.() -> Unit
+) {
+    val intent = Intent(this, T::class.java)
+    intent.intentParams()
+    if (requestCode != 0) startActivityForResult(intent, requestCode) else startActivity(intent)
+    if (withFinish) finish()
+}
+```
+#### How to use?
 Without request code:
 
 ```
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          showSnackBar(yourView, "Your message", "Your action button title") {
-               navigation<ActivityTarget> {
-                    // put params here
-               }
+          navigation<ActivityTarget> {
+               // put params here
           }
      } 
 }
@@ -113,10 +128,8 @@ With request code:
 class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
-          showSnackBar(yourView, "Your message", "Your action button title") {
-               navigation<ActivityTarget>(requestCode = exp : 1234) {
-                    // put params here
-               }
+          navigation<ActivityTarget>(requestCode = exp : 1234) {
+               // put params here
           }
      } 
 }
