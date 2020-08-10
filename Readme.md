@@ -282,7 +282,7 @@ class LoremClass: AppCompatActivity() {
     
      fun someFunc() {
           createNotification {
-               val intentTarget = Intent(this@MovieActivity, yourActivityTarget::class.java).apply {
+               val intentTarget = Intent(yourContext, yourActivityTarget::class.java).apply {
                    // your custom param and flag
                }
                val pendingIntent =
