@@ -20,6 +20,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField("String", "GITHUB_AUTH_TOKEN", '"11757a52947e17e7f207d70ef1ab36e3624f58f9"')
         buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/3/"')
         buildConfigField("String", "BASE_IMAGE_MOVIE", '"https://image.tmdb.org/t/p/w500/"')
         buildConfigField("String", "MOVIE_API_KEY", '"1b2f29d43bf2e4f3142530bc6929d341"')

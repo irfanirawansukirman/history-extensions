@@ -16,7 +16,6 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.LayoutRes
