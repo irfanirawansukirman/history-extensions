@@ -29,15 +29,24 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.irfanirawansukirman.extensions.util.Const.Permission
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.coroutines.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import com.irfanirawansukirman.extensions.util.Const.Permission
-import com.karumi.dexter.listener.single.PermissionListener
 
+// source: https://proandroiddev.com/one-liner-intent-bundle-extras-extractor-in-kotlin-f4b614b390c4
+inline fun <reified T: Any> AppCompatActivity.extra(key: String, default: T? = null) = lazy {
+    val value = intent?.extras?.get(key)
+    if (value is T) value else default
+}
+inline fun <reified T: Any> AppCompatActivity.extraNotNull(key: String, default: T? = null) = lazy {
+    val value = intent?.extras?.get(key)
+    requireNotNull(if (value is T) value else default) { key }
+}
 
 // source: https://medium.com/@Zhuinden/simple-one-liner-viewbinding-in-fragments-and-activities-with-kotlin-961430c6c07c
 @Suppress("UNCHECKED_CAST")

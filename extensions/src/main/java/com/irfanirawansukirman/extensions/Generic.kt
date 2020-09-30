@@ -69,10 +69,27 @@ fun String.formatToLocaleRegion(context: Context, region: String = "ID"): String
 }
 
 fun String.isPhoneValid(context: Context, region: String = "ID"): Boolean {
-    val phoneNumberKit = PhoneNumberUtil.createInstance(context)
-    val number = phoneNumberKit.parse(this, region)
-    return phoneNumberKit.isValidNumber(number)
+    return if (this.isEmpty()) {
+        false
+    } else {
+        val phoneNumberKit = PhoneNumberUtil.createInstance(context)
+        val number = phoneNumberKit.parse(this, region)
+        phoneNumberKit.isValidNumber(number)
+    }
 }
+
+val String.creditCardFormatted: String
+    get() {
+        val preparedString = replace(" ", "").trim()
+        val result = StringBuilder()
+        for (i in preparedString.indices) {
+            if (i % 4 == 0 && i != 0) {
+                result.append(" ")
+            }
+            result.append(preparedString[i])
+        }
+        return result.toString()
+    }
 // =================================================================================================
 
 /**
