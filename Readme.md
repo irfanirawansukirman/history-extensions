@@ -21,7 +21,7 @@ allprojects {
 and add it to your build.gradle (module):
 
 ```
-implementation 'com.github.irfanirawansukirman:history-extensions:0.0.4'
+implementation 'com.github.irfanirawansukirman:history-extensions:0.0.6'
 ```
 
 ## Table of Contents
