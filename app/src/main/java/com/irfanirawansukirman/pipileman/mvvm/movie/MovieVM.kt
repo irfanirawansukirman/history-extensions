@@ -1,5 +1,7 @@
 package com.irfanirawansukirman.pipileman.mvvm.movie
 
+import android.app.Application
+import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +11,7 @@ import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.CoroutineCon
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 interface MovieContract {
     fun getPopularMovies()
@@ -19,9 +22,10 @@ interface MovieContract {
 }
 
 class MovieVM @ViewModelInject constructor(
+    @ApplicationContext context: Context,
     coroutineContextProvider: CoroutineContextProvider,
     private val movieRepositoryImpl: MovieRepositoryImpl
-) : BaseViewModel(coroutineContextProvider), MovieContract {
+) : BaseViewModel(context as Application, coroutineContextProvider), MovieContract {
     
     private val _movie = MutableLiveData<UIState<List<Result>>>()
     val movie: LiveData<UIState<List<Result>>>

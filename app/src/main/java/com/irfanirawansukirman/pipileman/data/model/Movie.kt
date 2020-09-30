@@ -1,49 +1,52 @@
 package com.irfanirawansukirman.pipileman.data.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-
-@JsonClass(generateAdapter = true)
+@Parcelize
+@Serializable
 data class Movie(
-    @Json(name = "page")
+    @SerialName("page")
     val page: Int?,
-    @Json(name = "results")
+    @SerialName("results")
     val results: List<Result>?,
-    @Json(name = "total_pages")
+    @SerialName("total_pages")
     val totalPages: Int?,
-    @Json(name = "total_results")
+    @SerialName("total_results")
     val totalResults: Int?
-)
+) : Parcelable
 
-@JsonClass(generateAdapter = true)
+@Parcelize
+@Serializable
 data class Result(
-    @Json(name = "adult")
+    @SerialName("adult")
     val adult: Boolean?,
-    @Json(name = "backdrop_path")
+    @SerialName("backdrop_path")
     val backdropPath: String?,
-    @Json(name = "genre_ids")
+    @SerialName("genre_ids")
     val genreIds: List<Int>?,
-    @Json(name = "id")
+    @SerialName("id")
     val id: Int?,
-    @Json(name = "original_language")
+    @SerialName("original_language")
     val originalLanguage: String?,
-    @Json(name = "original_title")
+    @SerialName("original_title")
     val originalTitle: String?,
-    @Json(name = "overview")
+    @SerialName("overview")
     val overview: String?,
-    @Json(name = "popularity")
+    @SerialName("popularity")
     val popularity: Double?,
-    @Json(name = "poster_path")
+    @SerialName("poster_path")
     val posterPath: String?,
-    @Json(name = "release_date")
+    @SerialName("release_date")
     val releaseDate: String?,
-    @Json(name = "title")
+    @SerialName("title")
     val title: String?,
-    @Json(name = "video")
+    @SerialName("video")
     val video: Boolean?,
-    @Json(name = "vote_average")
-    val voteAverage: Double?,
-    @Json(name = "vote_count")
+    @SerialName("vote_average")
+    val voteAverage: Float?,
+    @SerialName("vote_count")
     val voteCount: Int?
-)
+) : Parcelable

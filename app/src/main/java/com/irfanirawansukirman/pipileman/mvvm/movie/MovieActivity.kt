@@ -25,8 +25,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-data class User(val name: String)
-
 @AndroidEntryPoint
 class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::inflate),
     MovieContract {
@@ -65,7 +63,6 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
             GlobalScope.launch(Dispatchers.Main) {
                 delay(2_000)
                 showSnackBar(root, "Data has been updated") {}
-                logD(User(name = "Irfan Irawan Sukirman"))
             }
         }
 

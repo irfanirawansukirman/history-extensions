@@ -1,29 +1,52 @@
 package com.irfanirawansukirman.extensions
 
-import android.app.Dialog
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.location.LocationManager
 import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Build
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.coroutines.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import com.irfanirawansukirman.extensions.util.Const.Permission
+import com.karumi.dexter.listener.single.PermissionListener
+
+
+// source: https://medium.com/@Zhuinden/simple-one-liner-viewbinding-in-fragments-and-activities-with-kotlin-961430c6c07c
+@Suppress("UNCHECKED_CAST")
+inline fun <T : ViewBinding> AppCompatActivity.getViewBinding(
+    crossinline bindingInflater: (LayoutInflater) -> T
+) =
+    lazy(LazyThreadSafetyMode.NONE) {
+        bindingInflater.invoke(layoutInflater)
+    } as T
 
 private var toast: Toast? = null
 fun AppCompatActivity.showToast(message: String) {
@@ -43,6 +66,31 @@ fun AppCompatActivity.showSnackBar(
     }.show()
 }
 
+fun AppCompatActivity.navigationModule(
+    baseModule: String = "com.irfanirawansukirman",
+    targetClass: String,
+    withFinish: Boolean = false
+) {
+    navigationModule(baseModule = baseModule, targetClass = targetClass, withFinish = withFinish) {}
+}
+
+// source: https://proandroiddev.com/easy-navigation-in-a-multi-module-android-project-2374ecbaa0ae
+fun AppCompatActivity.navigationModule(
+    baseModule: String = "com.irfanirawansukirman",
+    targetClass: String,
+    withFinish: Boolean = false,
+    requestCode: Int = 0,
+    intentParams: Intent.() -> Unit
+) {
+    val separator = "."
+    val intent = Intent()
+    intent.intentParams()
+    intent.setClassName(this, baseModule + separator + targetClass)
+    if (requestCode != 0) startActivityForResult(intent, requestCode) else startActivity(intent)
+    if (withFinish) finish()
+    overridePendingTransitionEnter()
+}
+
 inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation() {
     navigation<T> {}
 }
@@ -56,6 +104,11 @@ inline fun <reified T : AppCompatActivity> AppCompatActivity.navigation(
     intent.intentParams()
     if (requestCode != 0) startActivityForResult(intent, requestCode) else startActivity(intent)
     if (withFinish) finish()
+    overridePendingTransitionEnter()
+}
+
+fun AppCompatActivity.navigateToSetting(settingsId: String) {
+    startActivity(Intent(settingsId))
 }
 
 fun AppCompatActivity.finishResult(resultCode: Int = 1234) {
@@ -70,6 +123,30 @@ fun AppCompatActivity.finishResult(
     intent.intentParams()
     setResult(resultCode, intent)
     finish()
+}
+
+fun AppCompatActivity.makeStatusBarTransparent() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        window.apply {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            } else {
+                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            }
+            statusBarColor = Color.TRANSPARENT
+        }
+    }
+}
+
+fun AppCompatActivity.overridePendingTransitionEnter() {
+    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
+}
+
+fun AppCompatActivity.overridePendingTransitionExit() {
+    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
 }
 
 fun AppCompatActivity.isNetworkAvailable(context: Context): Boolean {
@@ -149,14 +226,16 @@ fun AppCompatActivity.createNotification(
 
 fun AppCompatActivity.clearNotification() = notificationManager?.cancelAll()
 
-var moshi: Moshi? = null
+inline fun <reified T> AppCompatActivity.encodeToString(obj: T): String {
+    return Json.encodeToString(obj)
+}
+
+inline fun <reified T> AppCompatActivity.decodeToObj(data: String): T {
+    return Json.decodeFromString(data)
+}
+
 inline fun <reified T> AppCompatActivity.logD(obj: T) {
-    moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-    val adapter = moshi?.adapter<T>(T::class.java)
-    val json = adapter?.toJson(obj) ?: "Error"
-    logD(json)
+    logD(encodeToString(obj))
 }
 
 fun AppCompatActivity.logD(message: String) {
@@ -164,12 +243,7 @@ fun AppCompatActivity.logD(message: String) {
 }
 
 inline fun <reified T> AppCompatActivity.logE(obj: T) {
-    moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-    val adapter = moshi?.adapter<T>(T::class.java)
-    val json = adapter?.toJson(obj) ?: "Error"
-    logE(json)
+    logD(encodeToString(obj))
 }
 
 fun AppCompatActivity.logE(message: String) {
@@ -197,10 +271,85 @@ fun AppCompatActivity.getStatusBarHeight(): Int {
     return result
 }
 
-fun AppCompatActivity.singlePermission() {
-    // coming soon
+fun AppCompatActivity.requestSinglePermission(
+    permission: String,
+    listener: PermissionListener,
+    activity: Activity,
+    isSameThread: Boolean = true
+) {
+    Dexter.withActivity(activity)
+        .withPermission(permission)
+        .withListener(listener)
+        .apply { if (isSameThread) onSameThread() }
+        .check()
 }
 
-fun AppCompatActivity.multiplePermission() {
-    // coming soon
+fun AppCompatActivity.requestMultiplePermission(
+    permissions: List<String>,
+    listener: MultiplePermissionsListener,
+    activity: Activity,
+    isSameThread: Boolean = true
+) {
+    Dexter.withActivity(activity)
+        .withPermissions(permissions)
+        .withListener(listener)
+        .apply { if (isSameThread) onSameThread() }
+        .check()
 }
+
+/*
+ * List of self permissions
+ */
+fun AppCompatActivity.hasCameraPermission(): Boolean =
+    ContextCompat.checkSelfPermission(this, Permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+fun AppCompatActivity.hasWriteExtStoragePermission(): Boolean =
+    ContextCompat.checkSelfPermission(
+        this,
+        Permission.WRITE_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
+
+fun AppCompatActivity.hasLocationPermission(): Boolean {
+    return ContextCompat.checkSelfPermission(
+        this,
+        Permission.COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+        this,
+        Permission.FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+}
+
+private var locationManager: LocationManager? = null
+fun AppCompatActivity.hasGpsEnabled(): Boolean {
+    if (locationManager == null) {
+        getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    return locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+}
+
+fun AppCompatActivity.runHandler(time: Long = 3_000, executeTasks: () -> Unit) {
+    Handler().postDelayed({
+        executeTasks()
+    }, time)
+}
+
+fun AppCompatActivity.runCoroutine(
+    delayTime: Long = 0L,
+    dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    executeTasks: () -> Unit
+) {
+    GlobalScope.launch(dispatcher) {
+        if (delayTime != 0L) {
+            delay(delayTime)
+        }
+        executeTasks()
+    }
+}
+
+fun AppCompatActivity.getColorCompat(@ColorRes colorId: Int): Int? =
+    ContextCompat.getColor(this, colorId)
+
+fun AppCompatActivity.getDrawableCompat(@DrawableRes drawableId: Int): Drawable? =
+    ContextCompat.getDrawable(this, drawableId)

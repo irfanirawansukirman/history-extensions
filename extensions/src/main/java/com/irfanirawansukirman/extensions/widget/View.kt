@@ -1,6 +1,9 @@
 package com.irfanirawansukirman.extensions.widget
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.irfanirawansukirman.extensions.common.ThrottledOnClickListener
 
 fun View.show() {
@@ -35,3 +38,6 @@ fun View.setOnSingleClickListener(
         action(it)
     })
 }
+
+fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
+    LayoutInflater.from(context).inflate(layoutRes, this, false)

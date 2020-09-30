@@ -9,7 +9,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion appConfig.sdkTarget
-    buildToolsVersion appConfig.buildToolsV
+    buildToolsVersion appConfig.buildTools
 
     defaultConfig {
         applicationId appConfig.appId
@@ -73,10 +73,10 @@ dependencies {
     implementation diLibrary.hiltCommon
     implementation diLibrary.hiltViewModel
     kapt diLibrary.daggerCompiler
-    kapt diLibrary.daggerHiltAndroidCompilerKapt
+    kapt diLibrary.daggerHiltAndroidCompiler
     kapt diLibrary.hiltCompiler
-    androidTestImplementation diLibrary.daggerHiltAndroidTestImpl
-    kaptAndroidTest diLibrary.daggerHiltAndroidCompilerKapt
+    androidTestImplementation diLibrary.daggerHiltAndroidTest
+    kaptAndroidTest diLibrary.daggerHiltAndroidCompiler
 
     implementation aacLibrary.lifecycleJava8
     implementation aacLibrary.lifecycleVmExt
@@ -88,9 +88,6 @@ dependencies {
 
     implementation squareLibrary.okHttpIntcpt
     implementation squareLibrary.retrofit
-    implementation squareLibrary.moshiConverter
-    implementation squareLibrary.moshi
-    kapt squareLibrary.moshiCodegen
 
     implementation imageLoader.glide
     kapt imageLoader.glidCompiler
