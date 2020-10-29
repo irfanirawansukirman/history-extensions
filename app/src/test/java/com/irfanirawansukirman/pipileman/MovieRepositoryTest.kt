@@ -25,17 +25,15 @@ import java.io.IOException
 @RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryTest {
 
+    @get:Rule
+    var coroutinesRule = MainCoroutinesRule()
+
     private var testCoroutineContextProvider = TestCoroutineContextProvider()
 
     private var movieRepositoryImpl: MovieRepositoryImpl = mock()
     private var movieService: MovieService = mock()
     private var movieDao: MovieDao = mock()
 
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var coroutinesRule = MainCoroutinesRule()
-
-    @ExperimentalCoroutinesApi
     @Before
     fun `setup depends`() {
         movieRepositoryImpl =
@@ -44,23 +42,23 @@ class MovieRepositoryTest {
 
     @Test
     fun `get movies and not empty`() = coroutinesRule.runBlockingTest {
-        // mock
-        val mockMovies = MockUtil.getMockMovie()
-        movieService.stub { onBlocking { getPopular() } doReturn MockUtil.getMockMovie() }
+        // given
+        val expectedMovies = MockUtil.getMockMovie()
+        movieService.stub { onBlocking { getPopular() } doReturn expectedMovies }
 
-        // test
+        // when
         val flow = movieRepositoryImpl.getFakePopularMovies()
 
-        // verify
+        // then
         flow.collect {
             it.isSuccess.shouldBeTrue()
-            mockMovies.results `should be equal to` it.getOrNull()?.results
+            expectedMovies.results `should be equal to` it.getOrNull()?.results
         }
     }
 
     @Test
     fun `get movies but server is error`() = coroutinesRule.runBlockingTest {
-        // mock
+        // given
         val expectedErrorServer = MockUtil.getServerError()
         movieService.stub {
             onBlocking { getPopular() } doAnswer {
@@ -70,10 +68,10 @@ class MovieRepositoryTest {
             }
         }
 
-        // test
+        // when
         val flow = movieRepositoryImpl.getFakePopularMovies()
 
-        // verify
+        // then
         flow.collect {
             it.isFailure.shouldBeTrue()
             expectedErrorServer `should be equal to` it.exceptionOrNull()?.message
@@ -82,23 +80,23 @@ class MovieRepositoryTest {
 
     @Test
     fun `get movie and not empty`() = coroutinesRule.runBlockingTest {
-        // mock
-        val mockMovie = MockUtil.mockMovieEnt()
-        movieDao.stub { onBlocking { getObject(0) } doReturn mockMovie }
+        // given
+        val expectedMovie = MockUtil.mockMovieEnt()
+        movieDao.stub { onBlocking { getObject(0) } doReturn expectedMovie }
 
-        // test
+        // when
         val flow = movieRepositoryImpl.getFakeLocalMovie(0)
 
-        // verify
+        // then
         flow.collect {
             it.isSuccess.shouldBeTrue()
-            mockMovie `should be equal to` it.getOrNull()
+            expectedMovie `should be equal to` it.getOrNull()
         }
     }
 
     @Test
     fun `get movie but database is empty`() = coroutinesRule.runBlockingTest {
-        // mock
+        // given
         val expectedErrorDatabase = MockUtil.getCacheError()
         movieDao.stub {
             onBlocking { getObject(0) } doAnswer {
@@ -108,10 +106,10 @@ class MovieRepositoryTest {
             }
         }
 
-        // test
+        // when
         val flow = movieRepositoryImpl.getFakeLocalMovie(0)
 
-        // verify
+        // then
         flow.collect {
             it.isFailure.shouldBeTrue()
             expectedErrorDatabase `should be equal to` it.exceptionOrNull()?.message

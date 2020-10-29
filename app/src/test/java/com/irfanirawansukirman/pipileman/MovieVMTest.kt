@@ -1,11 +1,14 @@
 package com.irfanirawansukirman.pipileman
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
+import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
 import com.irfanirawansukirman.pipileman.mvvm.movie.MovieVM
 import com.nhaarman.mockitokotlin2.mock
@@ -16,6 +19,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -28,12 +33,12 @@ class MovieVMTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    private var testCoroutineContextProvider = TestCoroutineContextProvider()
+
     private var viewModel: MovieVM = mock()
     private var movieRepositoryImpl: MovieRepositoryImpl = mock()
     private var movieService: MovieService = mock()
     private var movieDao: MovieDao = mock()
-
-    private var testCoroutineContextProvider = TestCoroutineContextProvider()
 
     @ExperimentalCoroutinesApi
     @Before
