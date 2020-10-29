@@ -1,14 +1,11 @@
 package com.irfanirawansukirman.pipileman
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
 import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
-import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
 import com.irfanirawansukirman.pipileman.mvvm.movie.MovieVM
 import com.nhaarman.mockitokotlin2.mock
@@ -19,8 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -50,17 +45,15 @@ class MovieVMTest {
 
     @Test
     fun `get movies and not null and empty`() = coroutinesRule.runBlockingTest {
-        coroutinesRule.runBlockingTest {
-            // given
-            val expectedMovies = MockUtil.mockMovieLists()
+        // given
+        val expectedMovies = MockUtil.mockMovieLists()
 
-            // when
-            viewModel.getFakePopularMovie()
+        // when
+        viewModel.getFakePopularMovie()
 
-            // then
-            viewModel.movie.observeOnce {
-                expectedMovies `should be equal to` it.data
-            }
+        // then
+        viewModel.movie.observeOnce {
+            expectedMovies `should be equal to` it.data
         }
     }
 
