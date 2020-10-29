@@ -1,4 +1,4 @@
-package com.irfanirawansukirman.pipileman
+package com.irfanirawansukirman.pipileman.util
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*

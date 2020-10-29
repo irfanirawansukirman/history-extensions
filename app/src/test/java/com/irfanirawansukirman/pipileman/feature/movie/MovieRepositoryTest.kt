@@ -1,10 +1,11 @@
-package com.irfanirawansukirman.pipileman
+package com.irfanirawansukirman.pipileman.feature.movie
 
 import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
+import com.irfanirawansukirman.pipileman.util.MainCoroutinesRule
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

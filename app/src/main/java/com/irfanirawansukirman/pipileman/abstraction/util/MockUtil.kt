@@ -13,7 +13,7 @@ object MockUtil {
 
     fun getCacheError() = "Data tidak ditemukan"
 
-    fun getEmptyList(): List<Any>? = null
+    fun <T>getEmptyList(): List<T>? = null
 
     fun <T>getEmptyObj(): T? = null
 

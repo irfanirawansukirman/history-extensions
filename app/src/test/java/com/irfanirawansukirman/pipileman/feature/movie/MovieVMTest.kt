@@ -1,4 +1,4 @@
-package com.irfanirawansukirman.pipileman
+package com.irfanirawansukirman.pipileman.feature.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
@@ -6,8 +6,12 @@ import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutin
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
+import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
+import com.irfanirawansukirman.pipileman.util.getOrAwaitValue
 import com.irfanirawansukirman.pipileman.mvvm.movie.MovieVM
+import com.irfanirawansukirman.pipileman.util.observeOnce
+import com.irfanirawansukirman.pipileman.util.MainCoroutinesRule
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -52,25 +56,38 @@ class MovieVMTest {
         viewModel.getFakePopularMovie()
 
         // then
+        // #1
         viewModel.movie.observeOnce {
             expectedMovies `should be equal to` it.data
         }
+
+        // or
+
+        // #2
+        expectedMovies `should be equal to` viewModel.movie.getOrAwaitValue()?.data
     }
 
     @Test
     fun `get movies but server is error`() = coroutinesRule.runBlockingTest {
         // given
         val expectedErrorServer = MockUtil.getServerError()
-        val expectedErrorMovies = MockUtil.getEmptyList()
+        val expectedErrorMovies = MockUtil.getEmptyList<Result>()
 
         // when
         viewModel.getFakePopularMovie(true)
 
         // then
+        // #1
         viewModel.movie.observeOnce {
             expectedErrorServer `should be equal to` it.error
             expectedErrorMovies `should be equal to` it.data
         }
+
+        // or
+
+        // #2
+        expectedErrorServer `should be equal to` viewModel.movie.value?.error
+        expectedErrorMovies `should be equal to` viewModel.movie.value?.data
     }
 
     @Test
@@ -82,24 +99,37 @@ class MovieVMTest {
         viewModel.getFakeLocalMovie(0)
 
         // then
+        // #1
         viewModel.movieObj.observeOnce {
             expectedMovie `should be equal to` it.data
         }
+
+        // or
+
+        // #2
+        expectedMovie `should be equal to` viewModel.movieObj.value?.data
     }
 
     @Test
     fun `get movie but database is empty`() = coroutinesRule.runBlockingTest {
         // given
-        val expectedErrorMovie = MockUtil.getEmptyObj<MovieEnt>()
         val expectedErrorDatabase = MockUtil.getCacheError()
+        val expectedErrorMovie = MockUtil.getEmptyObj<MovieEnt>()
 
         // when
         viewModel.getFakeLocalMovie(0, true)
 
         // then
+        // #1
         viewModel.movieObj.observeOnce {
             expectedErrorDatabase `should be equal to` it.error
             expectedErrorMovie `should be equal to` it.data
         }
+
+        // or
+
+        // #2
+        expectedErrorDatabase `should be equal to` viewModel.movieObj.value?.error
+        expectedErrorMovie `should be equal to` viewModel.movieObj.value?.data
     }
 }

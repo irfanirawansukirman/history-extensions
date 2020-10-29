@@ -79,7 +79,7 @@ class MovieVM @ViewModelInject constructor(
                         _movie.value = if (!isError) {
                             UIState.success(MockUtil.mockMovieLists())
                         } else {
-                            UIState.success(MockUtil.getEmptyList())
+                            UIState.success(MockUtil.getEmptyList<Result>())
                             UIState.error(MockUtil.getServerError())
                         }
                     }
