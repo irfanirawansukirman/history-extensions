@@ -1,16 +1,17 @@
 package com.irfanirawansukirman.pipileman
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
+import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
 import com.irfanirawansukirman.pipileman.mvvm.movie.MovieVM
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertEquals
+import org.amshove.kluent.`should be equal to`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,47 +22,86 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class MovieVMTest {
 
-    private var testCoroutineContextProvider: TestCoroutineContextProvider = mock()
-    private var viewModel: MovieVM = mock()
-    private var movieRepositoryImpl: MovieRepositoryImpl = mock()
-
-    private var movieService: MovieService = mock()
-    private var movieDao: MovieDao = mock()
-
-    @ExperimentalCoroutinesApi
     @get:Rule
     var coroutinesRule = MainCoroutinesRule()
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    private var viewModel: MovieVM = mock()
+    private var movieRepositoryImpl: MovieRepositoryImpl = mock()
+    private var movieService: MovieService = mock()
+    private var movieDao: MovieDao = mock()
+
+    private var testCoroutineContextProvider = TestCoroutineContextProvider()
+
     @ExperimentalCoroutinesApi
     @Before
     fun `setup depends`() {
-        movieRepositoryImpl = MovieRepositoryImpl(movieService, movieDao)
-        testCoroutineContextProvider = TestCoroutineContextProvider()
+        movieRepositoryImpl =
+            MovieRepositoryImpl(testCoroutineContextProvider, movieService, movieDao)
         viewModel = MovieVM(testCoroutineContextProvider, movieRepositoryImpl)
     }
 
     @Test
-    fun `get all popular movies from API`() {
+    fun `get movies and not null and empty`() = coroutinesRule.runBlockingTest {
         coroutinesRule.runBlockingTest {
-            whenever(movieRepositoryImpl.getPopularMovies()).thenReturn(MockUtil.mockMovieLists())
+            // given
+            val expectedMovies = MockUtil.mockMovieLists()
 
-            viewModel.getPopularMovies()
+            // when
+            viewModel.getFakePopularMovie()
 
-            assertEquals(viewModel.movie.value?.data, MockUtil.mockMovieLists())
+            // then
+            viewModel.movie.observeOnce {
+                expectedMovies `should be equal to` it.data
+            }
         }
     }
 
     @Test
-    fun `get a popular movie from cache`() {
-        coroutinesRule.runBlockingTest {
-            whenever(movieRepositoryImpl.getLocalMovie(0)).thenReturn(MockUtil.mockMovieEnt())
+    fun `get movies but server is error`() = coroutinesRule.runBlockingTest {
+        // given
+        val expectedErrorServer = MockUtil.getServerError()
+        val expectedErrorMovies = MockUtil.getEmptyList()
 
-            viewModel.getLocalMovie(0)
+        // when
+        viewModel.getFakePopularMovie(true)
 
-            assertEquals(viewModel.movieObj.value?.data, MockUtil.mockMovieEnt())
+        // then
+        viewModel.movie.observeOnce {
+            expectedErrorServer `should be equal to` it.error
+            expectedErrorMovies `should be equal to` it.data
+        }
+    }
+
+    @Test
+    fun `get movie and not empty`() = coroutinesRule.runBlockingTest {
+        // given
+        val expectedMovie = MockUtil.mockMovieEnt()
+
+        // when
+        viewModel.getFakeLocalMovie(0)
+
+        // then
+        viewModel.movieObj.observeOnce {
+            expectedMovie `should be equal to` it.data
+        }
+    }
+
+    @Test
+    fun `get movie but database is empty`() = coroutinesRule.runBlockingTest {
+        // given
+        val expectedErrorMovie = MockUtil.getEmptyObj<MovieEnt>()
+        val expectedErrorDatabase = MockUtil.getCacheError()
+
+        // when
+        viewModel.getFakeLocalMovie(0, true)
+
+        // then
+        viewModel.movieObj.observeOnce {
+            expectedErrorDatabase `should be equal to` it.error
+            expectedErrorMovie `should be equal to` it.data
         }
     }
 }

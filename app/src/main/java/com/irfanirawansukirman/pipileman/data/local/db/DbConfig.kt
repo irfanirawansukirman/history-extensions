@@ -9,5 +9,4 @@ import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 abstract class DbConfig : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
-
 }

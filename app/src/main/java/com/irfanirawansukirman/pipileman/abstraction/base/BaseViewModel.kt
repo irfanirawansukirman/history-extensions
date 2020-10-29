@@ -22,11 +22,9 @@ abstract class BaseViewModel(private val coroutineContextProvider: CoroutineCont
     fun executeJob(
         execute: suspend () -> Unit
     ) {
-        viewModelScope.launch(coroutineContextProvider.main) {
+        viewModelScope.launch(coroutineContextProvider.io) {
             try {
-                withTimeout(10_000) {
-                    execute()
-                }
+                withTimeout(10_000) { execute() }
             } catch (e: TimeoutCancellationException) {
                 // timeOutException(Throwable("Request Timeout")) // 408 for error code
                 _timeoutException.postValue(UIState.timeout(e.message ?: "Request Timeout"))
@@ -42,9 +40,7 @@ abstract class BaseViewModel(private val coroutineContextProvider: CoroutineCont
     ) {
         viewModelScope.launch {
             try {
-                withTimeout(10_000) {
-                    withContext(Dispatchers.IO) { execute() }
-                }
+                withTimeout(10_000) { withContext(Dispatchers.IO) { execute() } }
             } catch (e: TimeoutCancellationException) {
                 // timeOutException(Throwable("Request Timeout")) // 408 for error code
                 _timeoutException.postValue(UIState.timeout(e.message ?: "Request Timeout"))

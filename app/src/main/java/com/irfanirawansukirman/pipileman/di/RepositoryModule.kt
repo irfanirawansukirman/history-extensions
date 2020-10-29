@@ -1,5 +1,7 @@
 package com.irfanirawansukirman.pipileman.di
 
+import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.CoroutineContextProvider
+import com.irfanirawansukirman.pipileman.data.MovieRepository
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
@@ -16,7 +18,8 @@ object RepositoryModule {
     @Provides
     @ActivityRetainedScoped
     fun provideMovieRepositoryImpl(
+        coroutineContextProvider: CoroutineContextProvider,
         movieService: MovieService,
         movieDao: MovieDao
-    ): MovieRepositoryImpl = MovieRepositoryImpl(movieService, movieDao)
+    ): MovieRepository.Remote = MovieRepositoryImpl(coroutineContextProvider, movieService, movieDao)
 }

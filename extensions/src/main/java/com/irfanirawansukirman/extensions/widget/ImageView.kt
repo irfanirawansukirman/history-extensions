@@ -9,6 +9,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.irfanirawansukirman.extensions.common.GlideApp
 
 fun ImageView.load(
     path: String?,
@@ -16,7 +17,7 @@ fun ImageView.load(
     @DrawableRes error: Int,
     @DrawableRes placeholder: Int
 ) {
-    Glide.with(this)
+    GlideApp.with(this)
         .load(path)
         .error(error)
         .placeholder(placeholder)
@@ -30,6 +31,7 @@ fun ImageView.load(
                 progress.hide()
                 return false
             }
+
             override fun onResourceReady(
                 resource: Drawable?,
                 model: Any?,
@@ -50,7 +52,7 @@ fun ImageView.loadCircle(
     @DrawableRes error: Int,
     @DrawableRes placeholder: Int
 ) {
-    Glide.with(this)
+    GlideApp.with(this)
         .load(path)
         .error(error)
         .placeholder(placeholder)
@@ -65,6 +67,7 @@ fun ImageView.loadCircle(
                 progress?.hide()
                 return false
             }
+
             override fun onResourceReady(
                 resource: Drawable?,
                 model: Any?,

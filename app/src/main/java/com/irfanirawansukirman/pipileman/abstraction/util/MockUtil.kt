@@ -1,9 +1,21 @@
-package com.irfanirawansukirman.pipileman
+package com.irfanirawansukirman.pipileman.abstraction.util
 
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
+import com.irfanirawansukirman.pipileman.data.model.Movie
 import com.irfanirawansukirman.pipileman.data.model.Result
 
 object MockUtil {
+
+    fun getMockMovie() =
+        Movie(page = 0, results = mockMovieLists(), totalPages = 0, totalResults = 0)
+
+    fun getServerError() = "Server error pak"
+
+    fun getCacheError() = "Data tidak ditemukan"
+
+    fun getEmptyList(): List<Any>? = null
+
+    fun <T>getEmptyObj(): T? = null
 
     fun mockMovieLists() = listOf(
         Result(

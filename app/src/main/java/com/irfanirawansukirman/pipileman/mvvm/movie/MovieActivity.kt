@@ -2,7 +2,9 @@ package com.irfanirawansukirman.pipileman.mvvm.movie
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 data class User(val name: String)
 
@@ -44,6 +47,21 @@ class MovieActivity : BaseActivity<MovieActivityBinding>(MovieActivityBinding::i
         val date = "13/09/2008"
         btnCreate.text = "${date.getLongFromDate().toNewFormat()}\n${date.getLongFromDate()}"
         btnCreate.setOnClickListener {
+            val phoneNumber = "0821111111"
+
+            val text =
+                "Halo, jangan lupa untuk melakukan pembayaran langsung di tempat sebesar Rp 50.000 ya. Terima kasih!"
+            val textEncoded = URLEncoder.encode(text, "UTF-8")
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://sejalan.onelink.me/LxqE"))
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                // Handle exception
+            }
+
+            getPopularMovies()
+
             showToast("Internet is: ${isNetworkAvailable(this)}")
 
             createNotification {

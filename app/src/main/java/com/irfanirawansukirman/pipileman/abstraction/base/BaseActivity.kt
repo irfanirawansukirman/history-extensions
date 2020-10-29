@@ -100,5 +100,4 @@ abstract class BaseActivity<VB : ViewBinding>(private val viewBinder: (LayoutInf
     }
 
     fun getParentToolbar(): Toolbar? = mToolbar
-
 }

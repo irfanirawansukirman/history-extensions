@@ -20,6 +20,7 @@ class MainCoroutinesRule : TestRule, TestCoroutineScope by TestCoroutineScope() 
             Dispatchers.setMain(testCoroutinesDispatcher)
             base?.evaluate()
             Dispatchers.resetMain()
+            cleanupTestCoroutines()
         }
     }
 }

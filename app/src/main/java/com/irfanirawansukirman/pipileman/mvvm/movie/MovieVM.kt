@@ -5,24 +5,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.irfanirawansukirman.pipileman.abstraction.base.BaseViewModel
 import com.irfanirawansukirman.pipileman.abstraction.ui.UIState
+import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.CoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.withContext
 
 interface MovieContract {
     fun getPopularMovies()
+
+    interface Test {
+        fun getFakePopularMovie(isError: Boolean = false)
+        fun getFakeLocalMovie(movieId: Long, isError: Boolean = false)
+    }
 
     fun insertLocalMovie(movie: MovieEnt)
     fun getLocalMovie(movieId: Long)
     fun getAllLocalMovies()
 }
 
+@ExperimentalCoroutinesApi
 class MovieVM @ViewModelInject constructor(
-    coroutineContextProvider: CoroutineContextProvider,
+    private val coroutineContextProvider: CoroutineContextProvider,
     private val movieRepositoryImpl: MovieRepositoryImpl
-) : BaseViewModel(coroutineContextProvider), MovieContract {
-    
+) : BaseViewModel(coroutineContextProvider), MovieContract, MovieContract.Test {
+
+    // Real scope ==================================================================================
     private val _movie = MutableLiveData<UIState<List<Result>>>()
     val movie: LiveData<UIState<List<Result>>>
         get() = _movie
@@ -36,9 +47,11 @@ class MovieVM @ViewModelInject constructor(
         get() = _movieArray
 
     override fun getPopularMovies() {
-        _movie.value = UIState.loading()
-        executeJob { _movie.value = UIState.success(movieRepositoryImpl.getPopularMovies()) }
-        _movie.value = UIState.finish()
+        executeJob {
+            movieRepositoryImpl
+                .getPopularMovies()
+                .collect { withContext(coroutineContextProvider.main) { _movie.value = it } }
+        }
     }
 
     override fun insertLocalMovie(movie: MovieEnt) =
@@ -54,5 +67,34 @@ class MovieVM @ViewModelInject constructor(
         _movieArray.value = UIState.loading()
         executeJob { _movieArray.value = UIState.success(movieRepositoryImpl.getAllLocalMovies()) }
         _movieArray.value = UIState.finish()
+    }
+
+    // Test scope ==================================================================================
+    override fun getFakePopularMovie(isError: Boolean) {
+        executeJob {
+            movieRepositoryImpl
+                .getPopularMovies()
+                .collect {
+                    withContext(coroutineContextProvider.main) {
+                        _movie.value = if (!isError) {
+                            UIState.success(MockUtil.mockMovieLists())
+                        } else {
+                            UIState.success(MockUtil.getEmptyList())
+                            UIState.error(MockUtil.getServerError())
+                        }
+                    }
+                }
+        }
+    }
+
+    override fun getFakeLocalMovie(movieId: Long, isError: Boolean) {
+        executeJob {
+            _movieObj.value = if (!isError) {
+                UIState.success(MockUtil.mockMovieEnt())
+            } else {
+                UIState.success(MockUtil.getEmptyObj<MovieEnt>())
+                UIState.error(MockUtil.getCacheError())
+            }
+        }
     }
 }
