@@ -8,10 +8,10 @@ import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
 import com.irfanirawansukirman.pipileman.data.local.entity.MovieEnt
 import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
-import com.irfanirawansukirman.pipileman.util.getOrAwaitValue
 import com.irfanirawansukirman.pipileman.mvvm.movie.MovieVM
-import com.irfanirawansukirman.pipileman.util.observeOnce
 import com.irfanirawansukirman.pipileman.util.MainCoroutinesRule
+import com.irfanirawansukirman.pipileman.util.getOrAwaitValue
+import com.irfanirawansukirman.pipileman.util.observeOnce
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

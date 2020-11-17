@@ -8,7 +8,7 @@ allprojects {
 
 ext {
     gradlePluginV = '4.0.0'
-    kotXPluginV = '1.3.72'
+    kotXPluginV = '1.4.10'
     project = [
             gradlePlugin             : "com.android.tools.build:gradle:${gradlePluginV}",
             kotlinPlugin             : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotXPluginV}",
@@ -208,8 +208,24 @@ ext {
             glide       : "com.github.bumptech.glide:glide:${glideLibV}",
             glidCompiler: "com.github.bumptech.glide:compiler:${glideLibV}"
     ]
+    //==================================
 
-    jUnitLibV = '4.13'
+    unitTest = [
+            containerTest: [
+                    'junit:junit:4.13.1',
+                    'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0',
+                    'org.mockito:mockito-inline:3.3.3',
+                    'org.robolectric:robolectric:4.4',
+                    'androidx.arch.core:core-testing:2.1.0',
+                    'com.squareup.okhttp3:mockwebserver:4.8.0',
+                    'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9',
+                    'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.0',
+                    'android.arch.core:core-testing:1.1.1',
+                    'io.mockk:mockk:1.9.3'
+            ]
+    ]
+
+    jUnitLibV = '4.13.1'
     jUnitXLibV = '1.1.1'
     espressoCoreLibV = '3.1.1'
     mockitoInlineLibV = '3.0.0'

@@ -1,9 +1,11 @@
 package com.irfanirawansukirman.pipileman.feature.movie
 
+import androidx.lifecycle.Observer
 import com.irfanirawansukirman.pipileman.abstraction.util.MockUtil
 import com.irfanirawansukirman.pipileman.abstraction.util.coroutine.TestCoroutineContextProvider
 import com.irfanirawansukirman.pipileman.data.MovieRepositoryImpl
 import com.irfanirawansukirman.pipileman.data.local.dao.MovieDao
+import com.irfanirawansukirman.pipileman.data.model.Result
 import com.irfanirawansukirman.pipileman.data.remote.MovieService
 import com.irfanirawansukirman.pipileman.util.MainCoroutinesRule
 import com.nhaarman.mockitokotlin2.doAnswer
@@ -19,6 +21,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.junit.MockitoJUnitRunner
 import java.io.IOException
 
